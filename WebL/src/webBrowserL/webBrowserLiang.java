@@ -70,7 +70,7 @@ public class webBrowserLiang {
 		jFrame.setSize(1200, 800);
 		jFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize().width, Toolkit.getDefaultToolkit().getScreenSize().height);
 		jFrame.setVisible(true);
-		jFrame.setTitle("��� �Ⱦ� ͹ѹ���Թ��� s5050309@kmitl.ac.th - Java Web Browser (Network Programming Class Assignment)");
+		jFrame.setTitle("¹ÒÂ ·È¾Å Í¹Ñ¹µìÊÔ¹ªÑÂ s5050309@kmitl.ac.th - Java Web Browser (Network Programming Class Assignment)");
 		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		labelUrl = new JLabel(" URL : ");
 		labelUrl.setFont(new Font("Cordia New", Font.ROMAN_BASELINE, 27));
@@ -260,7 +260,7 @@ public class webBrowserLiang {
 		addressUrl1.setText(url);
 	}
 	
-	private void print(String tabName, String msg) {
+	private synchronized void print(String tabName, String msg) {
 		area.append( tabName + "} : " + msg + "\n");
 		area.setCaretPosition(area.getText().length());
 	}
