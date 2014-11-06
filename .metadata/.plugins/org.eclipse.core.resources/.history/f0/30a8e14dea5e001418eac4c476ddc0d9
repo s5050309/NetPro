@@ -1,0 +1,9 @@
+package webBrowserL;
+
+public class runWeb {
+	public static void main(String[] args)
+	{
+		webBrowserLiang start = new webBrowserLiang();
+		start.setVisable(true);
+	}
+}
