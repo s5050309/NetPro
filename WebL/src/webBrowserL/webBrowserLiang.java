@@ -23,11 +23,15 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Map;
 
 import com.teamdev.jxbrowser.chromium.Browser;
 import com.teamdev.jxbrowser.chromium.BrowserFactory;
 import com.teamdev.jxbrowser.chromium.events.LoadAdapter;
-import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;
+import com.teamdev.jxbrowser.chromium.events.StartLoadingEvent;	
 
 public class webBrowserLiang {
 	public static void main(String[] args)
@@ -49,6 +53,7 @@ public class webBrowserLiang {
 	private JTextArea area;
 	private JScrollPane scroll;
 	
+	
 	private Thread t1;
 	private Thread t2;
 
@@ -57,6 +62,8 @@ public class webBrowserLiang {
 		initLookAndFeel();
 		loadInterface();
 	}
+	
+	
 
 	private void loadInterface(){
 		jFrame = new JFrame();
@@ -94,11 +101,11 @@ public class webBrowserLiang {
 				t1 = new Thread(new Runnable() {
 					public void run() {
 						onClickbTBack();
-						print("Thread 1", "Load = " + bSer.getURL());
+						print("{ Thread 1", "Load = " + bSer.getURL());
 						while(bSer.isLoading()) {
 
 						}
-						print("Thread 1", "Finish = " + bSer.getURL());
+						print("{ Thread 1", "Finish = " + bSer.getURL());
 					}
 				});
 				t1.start();
@@ -112,11 +119,11 @@ public class webBrowserLiang {
 				t2 = new Thread(new Runnable() {
 					public void run() {
 						onClickbTBack1();
-						print("Thread 2", "Load = " + bSer1.getURL());
+						print("									   { Thread 2", "Load = " + bSer1.getURL());
 						while(bSer1.isLoading()) {
 							
 						}
-						print("Thread 2", "Finish = " + bSer1.getURL());
+						print("									   { Thread 2", "Finish = " + bSer1.getURL());
 					}
 				});
 				t2.start();
@@ -254,7 +261,7 @@ public class webBrowserLiang {
 	}
 	
 	private void print(String tabName, String msg) {
-		area.append("{" + tabName + "} : " + msg + "\r\n");
+		area.append( tabName + "} : " + msg + "\n");
 		area.setCaretPosition(area.getText().length());
 	}
 	
@@ -262,11 +269,12 @@ public class webBrowserLiang {
 		t1 = new Thread(new Runnable() {
 			public void run() {
 				reload(addressUrl.getText(), true);
-				print("Thread 1", "Load = " + bSer.getURL());
+				getHeader(addressUrl.getText(), "{ Thread 1");
+				print("{ Thread 1", "Load = " + bSer.getURL());
 				while(bSer.isLoading()) {
-					
+					print("{ Thread 1", "running..");
 				}
-				print("Thread 1", "Finish = " + bSer.getURL());
+				print("{ Thread 1", "Finish = " + bSer.getURL());
 			}
 		});
 		t1.start();
@@ -276,14 +284,46 @@ public class webBrowserLiang {
 		t2 = new Thread(new Runnable() {
 			public void run() {
 				reload1(addressUrl1.getText(), true);
-				print("Thread 2", "Load = " + bSer1.getURL());
+				getHeader(addressUrl1.getText(),"									   { Thread 2");
+				print("									   { Thread 2", "Load = " + bSer1.getURL());
 				while(bSer1.isLoading()) {
-
+					print("									   { Thread 2", "running..");
 				}
-				print("Thread 2", "Finish = " + bSer1.getURL());
+				print("									   { Thread 2", "Finish = " + bSer1.getURL());
 			}
 		});
 		t2.start();
 	}
+	
+	  public void getHeader(String Url, String t) {
+		  
+		    try {
+		 
+			URL obj = new URL(Url);
+			URLConnection conn = obj.openConnection();
+			Map<String, List<String>> map = conn.getHeaderFields();
+		 
+			print(t,"Get Header = "+Url);
+		 
+			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
+				print(t, entry.getKey() 
+		                           + " ,Value : " + entry.getValue());
+			}
+			String server = conn.getHeaderField("Server");
+		 
+			if (server == null) {
+				print(t," 'Server' is not found!");
+			} else {
+				System.out.println("Server - " + server);
+			}
+		 
+			print(t,"=======================================================");
+		 
+		    } catch (Exception e) {
+			e.printStackTrace();
+		    }
+		 
+		  }
+		
 	
 }
