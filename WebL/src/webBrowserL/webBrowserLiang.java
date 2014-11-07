@@ -136,7 +136,7 @@ public class webBrowserLiang {
 		area.setEditable(false);
 		area.setLineWrap(true);
 		area.setWrapStyleWord(true);
-		area.setSize(area.getWidth(), jFrame.getHeight() / 4);
+		area.setSize(area.getWidth(), jFrame.getHeight() / 2);
 		scroll = new JScrollPane(area);
 		scroll.setPreferredSize(new Dimension(area.getWidth(), area.getHeight()));
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -188,8 +188,8 @@ public class webBrowserLiang {
 				resizeSolution();
 			}
 		});
-		addressUrl.setText("www.google.co.th");
 		addressUrl1.setText("www.facebook.com");
+		addressUrl.setText("www.google.co.th");
 		runWeb1();
 		runWeb2();
 	}
@@ -199,7 +199,7 @@ public class webBrowserLiang {
 		bSer1.getView().getComponent().setSize(jFrame.getWidth() / 2, jFrame.getHeight());
 		bSer.getView().getComponent().setPreferredSize(new Dimension(bSer.getView().getComponent().getWidth(), bSer.getView().getComponent().getHeight()));
 		bSer1.getView().getComponent().setPreferredSize(new Dimension(bSer1.getView().getComponent().getWidth(), bSer1.getView().getComponent().getHeight()));
-		area.setSize(area.getWidth(), jFrame.getHeight() / 4);
+		area.setSize(area.getWidth(), jFrame.getHeight() / 2);
 		scroll.setPreferredSize(new Dimension(area.getWidth(), area.getHeight()));
 	}
 
@@ -270,9 +270,14 @@ public class webBrowserLiang {
 			public void run() {
 				reload(addressUrl.getText(), true);
 				getHeader(addressUrl.getText(), "{ Thread 1");
-				print("{ Thread 1", "Load = " + bSer.getURL());
+				print("{ Thread 1", "Start = " + bSer.getURL());
 				while(bSer.isLoading()) {
 					print("{ Thread 1", "running..");
+					try {
+						Thread.sleep(1000L);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 				print("{ Thread 1", "Finish = " + bSer.getURL());
 			}
@@ -285,9 +290,14 @@ public class webBrowserLiang {
 			public void run() {
 				reload1(addressUrl1.getText(), true);
 				getHeader(addressUrl1.getText(),"									   { Thread 2");
-				print("									   { Thread 2", "Load = " + bSer1.getURL());
+				print("									   { Thread 2", "Start = " + bSer1.getURL());
 				while(bSer1.isLoading()) {
 					print("									   { Thread 2", "running..");
+					try {
+						Thread.sleep(1000L);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
 				print("									   { Thread 2", "Finish = " + bSer1.getURL());
 			}
@@ -306,16 +316,17 @@ public class webBrowserLiang {
 			print(t,"Get Header = "+Url);
 		 
 			for (Map.Entry<String, List<String>> entry : map.entrySet()) {
-				print(t, entry.getKey() 
-		                           + " ,Value : " + entry.getValue());
+				print(t, entry.getKey() + " : " + entry.getValue());
 			}
-			String server = conn.getHeaderField("Server");
-		 
-			if (server == null) {
-				print(t," 'Server' is not found!");
-			} else {
-				System.out.println("Server - " + server);
-			}
+			  List<String> contentLength = map.get("Content-Length");
+				 
+	            if (contentLength == null) {
+	            	print(t,"'Content-Length' doesn't present in Header!");
+	            } else {
+	                for (String header : contentLength) {
+	                print(t,"Content-Lenght: " + header);
+	                }
+	            }
 		 
 			print(t,"=======================================================");
 		 
